@@ -208,13 +208,22 @@ class PathsConfig(ABC):
         """
         return os.path.join(self.artifacts_dir, "allocs-l1.json")
 
+    @property
+    def l2_allocs_path(self):
+        """
+        Path to use for the devnet L2 account pre-allocations filepath. This includes ETH
+        pre-allocation to test accounts, and possibly the pre-deployed L2 contracts if
+        :py:attribute`contracts_in_l2_genesis` is true.
+        """
+        return os.path.join(self.artifacts_dir, "allocs-l2.json")
+
     # ==============================================================================================
     # L2 Artifacts Paths
 
     @property
     def addresses_path(self):
         """File mapping L1 contracts to their deployed addresses."""
-        return os.path.join(self.artifacts_dir, "addresses.json")
+        return os.path.join(self.artifacts_dir, ".deploy")
 
     @property
     def l2_genesis_path(self):

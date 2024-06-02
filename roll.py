@@ -6,6 +6,7 @@ invoking the appropriate commands.
 """
 
 import os
+import time
 import shutil
 
 import block_explorer
@@ -17,6 +18,7 @@ import l2_batcher
 import l2_deploy
 import l2_engine
 import l2_node
+import celestia_light_node
 import l2_proposer
 import libroll as lib
 import logrotate
@@ -130,6 +132,10 @@ p.command(
 p.command(
     "l2-sequencer",
     help="starts a local L2 node (op-node) in sequencer mode")
+
+p.command(
+    "celestia-light-node",
+    help="starts a celestia light node")
 
 p.command(
     "l2-batcher",
@@ -317,9 +323,12 @@ def main():
 
             deps.check_or_install_geth()
             deps.check_or_install_foundry()
+            deps.check_or_install_celestia_node()
 
             if config.run_devnet_l1:
                 l1.deploy_devnet_l1(config)
+            time.sleep(15)
+            celestia_light_node.start(config)
             l2.deploy_and_start(config)
             start_addons(config)
             wait(config)
@@ -338,7 +347,10 @@ def main():
                 l2.clean(config)
 
             deps.check_or_install_foundry()
+            deps.check_or_install_celestia_node()
 
+            time.sleep(15)
+            celestia_light_node.start(config)
             l2.deploy_and_start(config)
             start_addons(config)
             wait(config)
@@ -391,6 +403,15 @@ def main():
                 l2_node.clean(config)
 
             l2_node.start(config, sequencer=True)
+            wait(config)
+
+        elif state.args.command == "celestia-light-node":
+            if state.args.clean_first:
+                l2_node.clean(config)
+
+            deps.check_or_install_celestia_node()
+
+            celestia_light_node.start(config)
             wait(config)
 
         elif state.args.command == "l2-batcher":

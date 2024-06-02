@@ -39,6 +39,23 @@ class L2BatcherConfig:
         on-chain.
         """
 
+        # === DA ===
+
+        self.da_rpc = "http://127.0.0.1:26658"
+        """
+        The RPC URL of the DA (default: "http://127.0.0.1:26658").
+        """
+
+        self.da_auth_token = ""
+        """
+        The auth token of the DA (default: ""). Auto-configured if not set.
+        """
+
+        self.da_namespace = "00000000000000000000000000000000000000000008e5f679bf7116cb"
+        """
+        The namespace of the DA (default: "00000000000000000000000000000000000000000008e5f679bf7116cb").
+        """
+
         # === RPC ===
 
         self.batcher_enable_admin = False

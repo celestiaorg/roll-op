@@ -26,11 +26,9 @@ def setup(config: Config):
 ####################################################################################################
 
 def setup_optimism_repo(config: Config):
-    github_url = "https://github.com/ethereum-optimism/optimism.git"
+    github_url = "https://github.com/celestiaorg/optimism.git"
 
-    git_tag = "op-node/v1.3.1"
-    git_fix1_tag = "2e57472890f9fea39cde72537935393b068d3e0f"
-    git_fix2_tag = "5252c82f607af81f6cb741a370425eaf26280892"
+    git_tag = "origin/release-1.3.0@op-node/v1.7.7-rc.2"
     git_custom_tag = "roll-op/v1.3.1"
 
     if os.path.isfile("optimism"):
@@ -50,12 +48,6 @@ def setup_optimism_repo(config: Config):
                 cwd="optimism")
         lib.run("[optimism] checkout stable version",
                 f"git checkout --detach {git_tag}",
-                cwd="optimism")
-        lib.run("[optimism] install devnet fix",
-                f"git cherry-pick {git_fix1_tag}",
-                cwd="optimism")
-        lib.run("[optimism] install submodules fix",
-                f"git cherry-pick {git_fix2_tag}",
                 cwd="optimism")
         lib.run("[optimism] tag custom version",
                 f"git tag {git_custom_tag}",

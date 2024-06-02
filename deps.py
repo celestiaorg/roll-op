@@ -415,13 +415,13 @@ def get_foundry_version():
 
 ####################################################################################################
 
-FOUNDRY_VERSION = "2023-11-02"
+FOUNDRY_VERSION = "2024-06-02"
 """
 Required version of forge. We're locking down foundry to a specific version, as new versions can
 introduce serious regressions, and have done so in the past.
 """
 
-FOUNDRY_INSTALL_TAG = "nightly-09fe3e041369a816365a020f715ad6f94dbce9f2"
+FOUNDRY_INSTALL_TAG = "nightly-f479e945c6be78bb902df12f9d683c3bb55e3fb0 "
 """
 The tag of the foundry release to install if needed.
 """
@@ -519,6 +519,63 @@ def install_geth():
 
     print(f"Successfully installed geth {INSTALL_GETH_VERSION} as ./bin/geth")
 
+
+####################################################################################################
+
+MIN_CELESTIA_NODE_VERSION = "0.12.7"
+
+INSTALL_CELESTIA_NODE_VERSION = "0.13.6"
+
+# --------------------------------------------------------------------------------------------------
+
+def check_or_install_celestia_node():
+    """
+    Verify that celestia node is installed and has the correct version, or install it if not.
+    """
+
+    if shutil.which("celestia") is not None:
+        # This includes ./bin/jq, as basic_setup() adds ./bin to the path.
+        version_blob = lib.run("get celestia version", "celestia version")
+        match = re.search(r"^Semantic version: (\d+\.\d+\.\d+)", version_blob, flags=re.MULTILINE)
+        if match is not None:
+            version = match.group(1)
+            if version >= MIN_CELESTIA_NODE_VERSION:
+                print(f"Using celestia {version}")
+                return
+            else:
+                lib.debug(f"Found celestia {version}")
+
+    if lib.ask_yes_no(
+            f"Celestia node >= {MIN_CELESTIA_NODE_VERSION} is required. "
+            f"Install Celestia node {INSTALL_CELESTIA_NODE_VERSION} in ./bin?\n"
+            "This will overwrite any version of celestia that might be in that directory."):
+        install_celestia_node()
+    else:
+        raise Exception(f"Celestia node missing or wrong version (expected: > {MIN_CELESTIA_NODE_VERSION}).")
+
+
+# --------------------------------------------------------------------------------------------------
+
+def install_celestia_node():
+    """
+    Installs celestia node in ./bin
+    """
+    descr = "install celestia node"
+    os.makedirs("bin", exist_ok=True)
+    osys = get_valid_os("celestia").title()
+    arch = get_valid_arch("celestia")
+    if osys == "darwin" and arch == "arm64":
+        arch = "amd64"  # only version available, and is compatible via Rosetta
+
+    try:
+        host = "https://github.com"
+        celestia_id = f"v{INSTALL_CELESTIA_NODE_VERSION}/celestia-node_{osys}_{arch}.tar.gz"
+        url = f"{host}/celestiaorg/celestia-node/releases/download/{celestia_id}"
+        lib.run(descr, f"curl -L {url} | tar xz -C bin celestia")
+    except Exception as err:
+        raise lib.extend_exception(err, prefix="Failed to install celestia node: ") from None
+
+    print(f"Successfully installed celestia node {INSTALL_CELESTIA_NODE_VERSION} as ./bin/celestia")
 
 ####################################################################################################
 

@@ -25,6 +25,11 @@ class LogsConfig:
         Filename (not path!) for the log file of the L2 node.
         """
 
+        self.celestia_light_node_log_filename = "celestia_light_node.log"
+        """
+        Filename (not path!) for the log file of the celestia light node.
+        """
+
         self.l2_engine_log_filename = "l2_engine.log"
         """
         Filename (not path!) for the log file of the L2 engine.
@@ -114,6 +119,10 @@ class LogsConfig:
         return os.path.join(self.logs_dir, self.l2_node_log_filename)
 
     @property
+    def celestia_light_node_log_file(self):
+        return os.path.join(self.logs_dir, self.celestia_light_node_log_filename)
+
+    @property
     def l2_engine_log_file(self):
         return os.path.join(self.logs_dir, self.l2_engine_log_filename)
 
@@ -146,6 +155,7 @@ class LogsConfig:
         return [
             self.l1_node_log_file,
             self.l2_node_log_file,
+            self.celestia_light_node_log_file,
             self.l2_engine_log_file,
             self.l2_batcher_log_file,
             self.l2_proposer_log_file,

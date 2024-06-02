@@ -1,3 +1,4 @@
+import os
 from .account_abstraction import AccountAbstractionConfig
 from .accounts_keys import AccountsKeysConfig
 from .devnet_l1 import DevnetL1Config
@@ -49,6 +50,25 @@ class Config(
         # directory.
 
         super().__init__()
+
+    @property
+    def forge_l1_dump_path(self):
+        """
+        Path (within the Optimism monrepo) at which the OP stack deployment script will look for
+        the deploy configuration file. This file is also used to generated the L2 genesis, the
+        devnet L1 genesis if required, and the rollup config passed to the L2 node.
+        """
+        return os.path.join(self.op_contracts_dir, f"state-dump-{self.l1_chain_id}.json")
+
+    @property
+    def forge_l2_dump_path(self):
+        """
+        Path (within the Optimism monrepo) at which the OP stack deployment script will look for
+        the deploy configuration file. This file is also used to generated the L2 genesis, the
+        devnet L1 genesis if required, and the rollup config passed to the L2 node.
+        """
+        return os.path.join(self.op_contracts_dir, f"state-dump-{self.l2_chain_id}.json")
+
 
     # ==============================================================================================
 

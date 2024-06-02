@@ -119,6 +119,8 @@ def _deploy_contracts_on_l1(config: Config, tmp_l1: bool):
     env = {**os.environ,
            "DEPLOYMENT_CONTEXT": config.deployment_name,
            "ETH_RPC_URL": l1_rpc_url,
+           "DEPLOYMENT_OUTFILE": f"'{config.op_rollup_l1_contracts_addresses_path}'",
+           'DEPLOY_CONFIG_PATH': f"'{config.deploy_config_path}'",
            "IMPL_SALT": f"'{config.deploy_salt}'"}
 
     if config.deploy_slowly:
@@ -131,7 +133,10 @@ def _deploy_contracts_on_l1(config: Config, tmp_l1: bool):
     lib.run_roll_log(
         "deploy the L2 contracts on L1", [
             "forge script",
+            "--legacy",
+            "--offline",
             deploy_script,
+            "--sig", "runWithStateDump",
             "--sender", deployer_account,
             private_key_arg,
             f"--gas-estimate-multiplier {config.l1_deployment_gas_multiplier} "
@@ -144,24 +149,10 @@ def _deploy_contracts_on_l1(config: Config, tmp_l1: bool):
         env=env,
         log_file=log_file)
 
-    # copy now because the sync() invocation will delete the file
     shutil.copy(config.op_rollup_l1_contracts_addresses_path,
                 config.addresses_path)
-
-    log_file = f"{config.logs_dir}/create_l1_artifacts.log"
-    print(f"Creating L1 deployment artifacts. Logging to {log_file}")
-    lib.run_roll_log(
-        "create L1 deployment artifacts", [
-            "forge script",
-            deploy_script,
-            "--sig 'sync()'",
-            f"--rpc-url {l1_rpc_url}",
-        ],
-        cwd=config.op_contracts_dir,
-        env=env,
-        log_file=log_file)
-
-    shutil.move(config.op_deployment_artifacts_dir, config.abi_dir)
+    # shutil.move(config.op_deployment_artifacts_dir, config.abi_dir)
+    shutil.move(config.forge_l1_dump_path, config.l1_allocs_path)
 
 
 ####################################################################################################
@@ -175,12 +166,46 @@ def _generate_l2_genesis(config: Config):
     else:
         print("Generating L2 genesis and rollup configs.")
         try:
+            fqn = 'scripts/L2Genesis.s.sol:L2Genesis'
+
+            env = {**os.environ,
+                   'CHAIN_ID': f"'{config.l2_chain_id}'",
+                   'CONTRACT_ADDRESSES_PATH': f"'{config.addresses_path}'",
+                   'DEPLOY_CONFIG_PATH': f"'{config.deploy_config_path}'"}
+
+            log_file = f"{config.logs_dir}/generate_l2_allocs.log"
+            lib.run_roll_log(
+                "generate L2 allocs", [
+                    "forge script",
+                    "--legacy",
+                    "--offline",
+                    fqn,
+                    "--sig", "runWithStateDump",
+                    # "--sender", deployer_account,
+                    # private_key_arg,
+                    # f"--gas-estimate-multiplier {config.l1_deployment_gas_multiplier} "
+                    # f"--rpc-url {l1_rpc_url}",
+                    # "--broadcast",
+                    # slow_arg,
+                    # unlocked_arg
+                ],
+                cwd=config.op_contracts_dir,
+                env=env,
+                log_file=log_file)
+
+
+            # For the previous forks, and the latest fork (default, thus empty prefix),
+            # move the forge-dumps into place as .devnet allocs.
+            shutil.move(config.forge_l2_dump_path, config.l2_allocs_path)
+            print("Generated L2 alloc")
+
             lib.run(
                 "generate L2 genesis and rollup configs", [
                     "go run cmd/main.go genesis l2",
                     f"--l1-rpc={config.l1_rpc_url}",
                     f"--deploy-config={config.deploy_config_path}",
-                    f"--deployment-dir={config.abi_dir}",
+                    f"--l2-allocs={config.l2_allocs_path}",
+                    f"--l1-deployments={config.addresses_path}",
                     f"--outfile.l2={config.l2_genesis_path}",
                     f"--outfile.rollup={config.rollup_config_path}"
                 ],

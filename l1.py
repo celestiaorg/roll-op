@@ -70,14 +70,6 @@ def _create_devnet_l1_genesis_allocs(config: Config):
     geth = _start_temporary_geth_node(config)
     try:
         l2_deploy.deploy_contracts_on_l1(config, tmp_l1=True)
-
-        # dump latest block to get the allocs
-        host = f"127.0.0.1:{config.temp_l1_rpc_listen_port}"
-        print(f"Fetch debug_dumpBlock from {host}")
-        res = lib.send_json_rpc_request(host, 3, "debug_dumpBlock", ["latest"])
-        response = json.loads(res)
-        allocs = response['result']
-        lib.write_json_file(config.l1_allocs_path, allocs)
     finally:
         PROCESS_MGR.kill(geth, ensure=True)
 

@@ -17,6 +17,16 @@ def start(config: Config):
     log_file = config.l2_batcher_log_file
     print(f"Starting L2 batcher. Logging to {log_file}")
 
+    if config.da_auth_token == "":
+        auth_token = lib.run("Generating celestia auth token", [
+            "celestia",
+            "light",
+            "auth",
+            "write",
+            "--p2p.network", "mocha",
+        ], forward="capture")
+        config.da_auth_token = str(auth_token).strip()
+
     command = [
         "op-batcher",
 
@@ -29,6 +39,11 @@ def start(config: Config):
         f"--poll-interval={config.batcher_poll_interval}s",
         f"--sub-safety-margin={config.sub_safety_margin}",
         f"--max-channel-duration={config.max_channel_duration}",
+
+        # DA Options
+        f"--da.rpc='{config.da_rpc}'",
+        f"--da.auth_token='{config.da_auth_token}'",
+        f"--da.namespace='{config.da_namespace}'",
 
         # Tx Manager Options
         # https://github.com/ethereum-optimism/optimism/blob/develop/op-service/txmgr/cli.go
