@@ -421,7 +421,7 @@ Required version of forge. We're locking down foundry to a specific version, as 
 introduce serious regressions, and have done so in the past.
 """
 
-FOUNDRY_INSTALL_TAG = "nightly-f479e945c6be78bb902df12f9d683c3bb55e3fb0 "
+FOUNDRY_INSTALL_TAG = "nightly-f479e945c6be78bb902df12f9d683c3bb55e3fb0"
 """
 The tag of the foundry release to install if needed.
 """
@@ -564,8 +564,8 @@ def install_celestia_node():
     os.makedirs("bin", exist_ok=True)
     osys = get_valid_os("celestia").title()
     arch = get_valid_arch("celestia")
-    if osys == "darwin" and arch == "arm64":
-        arch = "amd64"  # only version available, and is compatible via Rosetta
+    if osys == "Linux" and arch == "arm64":
+        arch = "x86_64"
 
     try:
         host = "https://github.com"
