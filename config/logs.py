@@ -30,6 +30,11 @@ class LogsConfig:
         Filename (not path!) for the log file of the celestia light node.
         """
 
+        self.da_server_log_filename = "da_server.log"
+        """
+        Filename (not path!) for the log file of the celestia light node.
+        """
+
         self.l2_engine_log_filename = "l2_engine.log"
         """
         Filename (not path!) for the log file of the L2 engine.
@@ -121,6 +126,10 @@ class LogsConfig:
     @property
     def celestia_light_node_log_file(self):
         return os.path.join(self.logs_dir, self.celestia_light_node_log_filename)
+
+    @property
+    def da_server_log_file(self):
+        return os.path.join(self.logs_dir, self.da_server_log_filename)
 
     @property
     def l2_engine_log_file(self):

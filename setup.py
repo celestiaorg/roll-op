@@ -28,7 +28,7 @@ def setup(config: Config):
 def setup_optimism_repo(config: Config):
     github_url = "https://github.com/celestiaorg/optimism.git"
 
-    git_tag = "origin/release-1.3.0@op-node/v1.7.7-rc.2"
+    git_tag = "origin/plasma-celestia-openrpc"
     git_custom_tag = "roll-op/v1.3.1"
 
     if os.path.isfile("optimism"):
@@ -72,6 +72,9 @@ def setup_optimism_repo(config: Config):
 
     shutil.copyfile("optimism/op-node/bin/op-node", "bin/op-node")
     lib.chmodx("bin/op-node")
+
+    shutil.copyfile("optimism/op-plasma/bin/da-server", "bin/da-server")
+    lib.chmodx("bin/da-server")
 
     if not os.path.isfile("optimism/op-program/bin/prestate-proof.json"):
         print("Building the Cannon pre-state")

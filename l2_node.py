@@ -19,16 +19,6 @@ def start(config: Config, sequencer: bool = True):
 
     l2.generate_jwt_secret(config)
 
-    if config.da_auth_token == "":
-        auth_token = lib.run("Generating celestia auth token", [
-            "celestia",
-            "light",
-            "auth",
-            "write",
-            "--p2p.network", "mocha",
-        ], forward="capture")
-        config.da_auth_token = str(auth_token).strip()
-
     log_file = config.l2_node_log_file
     print(f"Starting L2 node. Logging to {log_file}")
 
@@ -44,10 +34,10 @@ def start(config: Config, sequencer: bool = True):
         f"--rollup.config={os.path.join('..', config.rollup_config_path)}",
         f"--l1.rpckind={config.l2_node_l1_rpc_kind}",
 
-        # DA Options
-        f"--da.rpc='{config.da_rpc}'",
-        f"--da.auth_token='{config.da_auth_token}'",
-        f"--da.namespace='{config.da_namespace}'",
+        # Plasma Options
+        f"--plasma.enabled='{config.plasma_enabled}'",
+        f"--plasma.da-server='{config.plasma_da_server}'",
+        f"--plasma.da-service='{config.plasma_da_service}'",
 
         # Sequencer Options
 

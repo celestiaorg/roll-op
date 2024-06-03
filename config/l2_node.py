@@ -56,6 +56,8 @@ class L2NodeConfig:
         (cf. :py:attr:`node_enable_admin`).
         """
 
+        # === Celestia Light Node ===
+
         self.celestia_light_node_rpc_listen_addr = "0.0.0.0"
         """
         Address the celestia light node RPC server should bind to ("0.0.0.0" by default).
@@ -72,6 +74,18 @@ class L2NodeConfig:
         Used for the "optimism" namespace API
         (https://community.optimism.io/docs/developers/build/json-rpc/) and the "admin" namespace
         (cf. :py:attr:`node_enable_admin`).
+        """
+
+        # === DA Server ===
+
+        self.da_server_rpc_listen_addr = "0.0.0.0"
+        """
+        Address the da server RPC server should bind to ("0.0.0.0" by default).
+        """
+
+        self.da_server_rpc_listen_port = 3100
+        """
+        Port the da server RPC server should bind to (3100 by default).
         """
 
         # === P2P Options ===

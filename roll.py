@@ -18,6 +18,7 @@ import l2_batcher
 import l2_deploy
 import l2_engine
 import l2_node
+import da_server
 import celestia_light_node
 import l2_proposer
 import libroll as lib
@@ -218,7 +219,7 @@ def load_config() -> Config:
             import tomli
         except Exception:
             raise Exception(
-                "Missing dependencies. Try running `rollop setup` first.")
+                "Missing dependencies. Try running `roll-op setup` first.")
         if os.path.exists(state.args.config_path):
             with open(state.args.config_path, mode="rb") as f:
                 config_file = tomli.load(f)
@@ -403,6 +404,15 @@ def main():
                 l2_node.clean(config)
 
             l2_node.start(config, sequencer=True)
+            wait(config)
+
+        elif state.args.command == "da-server":
+            if state.args.clean_first:
+                l2_node.clean(config)
+
+            deps.check_or_install_da_server()
+
+            da_server.start(config)
             wait(config)
 
         elif state.args.command == "celestia-light-node":
