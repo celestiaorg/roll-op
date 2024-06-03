@@ -212,10 +212,13 @@ DEVNET_CONFIG = {
     "respectedGameType": 0,
     "useCustomGasToken": False,
     "useFaultProofs": False,
-    "usePlasma": False,
-    "daCommitmentType": "KeccakCommitment",
-    "daChallengeWindow": 160,
-    "daResolveWindow": 160,
+    "usePlasma": True,
+    "plasmaConfig": {
+        "daChallegeAddress": "0x0000000000000000000000000000000000000000",
+        "daCommitmentType": "GenericCommitment",
+        "daChallengeWindow": 160,
+        "daResolveWindow": 160,
+    },
     "daBondSize": 1000000,
     "daResolverRefundPercentage": 0,
 
