@@ -328,8 +328,9 @@ def main():
 
             if config.run_devnet_l1:
                 l1.deploy_devnet_l1(config)
-            time.sleep(15)
             celestia_light_node.start(config)
+            time.sleep(15)
+            da_server.start(config)
             l2.deploy_and_start(config)
             start_addons(config)
             wait(config)
@@ -350,8 +351,9 @@ def main():
             deps.check_or_install_foundry()
             deps.check_or_install_celestia_node()
 
-            time.sleep(15)
             celestia_light_node.start(config)
+            time.sleep(15)
+            da_server.start(config)
             l2.deploy_and_start(config)
             start_addons(config)
             wait(config)
@@ -409,8 +411,6 @@ def main():
         elif state.args.command == "da-server":
             if state.args.clean_first:
                 l2_node.clean(config)
-
-            deps.check_or_install_da_server()
 
             da_server.start(config)
             wait(config)
