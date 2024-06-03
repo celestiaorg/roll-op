@@ -1,3 +1,4 @@
+import os
 from config import Config
 import libroll as lib
 from processes import PROCESS_MGR
@@ -15,23 +16,25 @@ def start(config: Config):
     log_file = config.da_server_log_file
     print(f"Starting da server. Logging to {log_file}")
 
-    auth_token = lib.run("Generating celestia auth token", [
-        "celestia",
-        "light",
-        "auth",
-        "write",
-        "--p2p.network", "mocha",
-    ]).strip()
+    auth_token = os.getenv("CELESTIA_NODE_AUTH_TOKEN")
+    if not auth_token:
+        auth_token = lib.run("Generating celestia auth token", [
+            "celestia",
+            "light",
+            "auth",
+            "write",
+            "--p2p.network", "mocha",
+        ]).strip()
 
     command = [
         "da-server",
-        "--addr", "0.0.0.0",
-        "--port", "3100",
-        "--log-level", "debug",
-        "--generic-commitment", "1",
-        "--celestia-server", "http://da:26658",
-        "--celestia-auth-token", auth_token,
-        "--celestia-namespace", "00000000000000000000000000000000000000000008e5f679bf7116cb",
+        "--addr=0.0.0.0",
+        "--port=3100",
+        "--log.level=debug",
+        "--generic-commitment=1",
+        "--celestia-server=http://da:26658",
+        f"--celestia-auth-token='{auth_token}'",
+        "--celestia-namespace=00000000000000000000000000000000000000000008e5f679bf7116cb",
     ]
 
     config.log_l2_command("\n".join(command))

@@ -139,6 +139,10 @@ p.command(
     help="starts a celestia light node")
 
 p.command(
+    "da-server",
+    help="starts a da server")
+
+p.command(
     "l2-batcher",
     help="starts a local L2 transaction batcher")
 
