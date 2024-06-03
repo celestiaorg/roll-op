@@ -32,9 +32,9 @@ def start(config: Config):
         "--port=3100",
         "--log.level=debug",
         "--generic-commitment=1",
-        "--celestia-server=http://da:26658",
-        f"--celestia-auth-token='{auth_token}'",
-        "--celestia-namespace=00000000000000000000000000000000000000000008e5f679bf7116cb",
+        "--celestia.server=http://da:26658",
+        f"--celestia.auth-token='{auth_token}'",
+        "--celestia.namespace=00000000000000000000000000000000000000000008e5f679bf7116cb",
     ]
 
     config.log_l2_command("\n".join(command))
