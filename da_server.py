@@ -26,7 +26,7 @@ def start(config: Config):
     command = [
         "da-server",
         "--addr", "0.0.0.0",
-        "--port-port", "3100",
+        "--port", "3100",
         "--log-level", "debug",
         "--generic-commitment", "1",
         "--celestia-server", "http://da:26658",

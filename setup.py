@@ -73,6 +73,11 @@ def setup_optimism_repo(config: Config):
     shutil.copyfile("optimism/op-node/bin/op-node", "bin/op-node")
     lib.chmodx("bin/op-node")
 
+    lib.run(
+        "[op-plasma] build da-server",
+        "go build -o da-server ./cmd/daserver",
+        cwd="optimism/op-plasma")
+
     shutil.copyfile("optimism/op-plasma/bin/da-server", "bin/da-server")
     lib.chmodx("bin/da-server")
 
