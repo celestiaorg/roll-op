@@ -85,6 +85,14 @@ def launch_blockscout(config: Config):
             f"NEXT_PUBLIC_NETWORK_ID={config.l2_chain_id}"
     }, regex=True)
 
+    lib.replace_in_file("blockscout/docker-compose/proxy/default.conf.template", {
+        r"^.*listen .* 80;": f"    listen       {config.http_listen_port};",
+    }, regex=True)
+
+    lib.replace_in_file("blockscout/docker-compose/services/nginx.yml", {
+        r"^.*- 80:80": f"      - {config.http_listen_port}:{config.http_listen_port}",
+    }, regex=True)
+
     env = {**os.environ,
            "COMPOSE_PROJECT_NAME": _COMPOSE_PROJECT_NAME,
            "NEXT_PUBLIC_NETWORK_NAME": config.chain_name,

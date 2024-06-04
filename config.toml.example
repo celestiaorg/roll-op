@@ -11,6 +11,7 @@ l1_rpc_url = "http://127.0.0.1:8545"
 #l1_chain_id = 5
 
 #l1_rpc_url = "https://ethereum-goerli.publicnode.com"
+#l1_beacon_url = ""https://ethereum-sepolia-beacon-api.publicnode.com""
 
 ## Keys
 

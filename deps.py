@@ -564,7 +564,7 @@ def install_celestia_node():
     os.makedirs("bin", exist_ok=True)
     osys = get_valid_os("celestia").title()
     arch = get_valid_arch("celestia")
-    if osys == "Linux" and arch == "arm64":
+    if osys == "Linux" and arch == "amd64":
         arch = "x86_64"
 
     try:

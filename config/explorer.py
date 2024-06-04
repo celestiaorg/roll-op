@@ -31,4 +31,6 @@ class ExplorerConfig(ABC):
         Defaults to "roll-op".
         """
 
+        self.http_listen_port = 4123
+
     # ==============================================================================================

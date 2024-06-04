@@ -245,6 +245,7 @@ def load_config() -> Config:
                 "l1_chain_id",
                 "l2_chain_id",
                 "l1_rpc_url",
+                "l1_beacon_url",
                 "contract_deployer_key",
                 "batcher_account",
                 "batcher_key",
@@ -266,6 +267,12 @@ def load_config() -> Config:
                 print("Config file specifies l1_rpc_url but not l1_rpc_for_node_url.\n"
                       "Automatically setting l1_rpc_for_node_url to the same value.")
                 config.l1_rpc_for_node_url = config.l1_rpc_url
+
+            if config_file.get("l1_beacon_url") is not None \
+                    and config_file.get("l1_beacon_for_node_url") is None:
+                print("Config file specifies l1_beacon_url but not l1_beacon_for_node_url.\n"
+                      "Automatically setting l1_beacon_for_node_url to the same value.")
+                config.l1_beacon_for_node_url = config.l1_beacon_url
 
         except KeyError as e:
             raise Exception(f"Missing config file value: {e}")

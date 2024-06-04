@@ -39,6 +39,8 @@ def start(config: Config, sequencer: bool = True):
         f"--plasma.da-server='{config.plasma_da_server}'",
         f"--plasma.da-service='{config.plasma_da_service}'",
 
+        f"--l1.beacon={config.l1_beacon_for_node_url}",
+
         # Sequencer Options
 
         *([] if not sequencer else [
