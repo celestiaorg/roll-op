@@ -82,6 +82,17 @@ class NetworkConfig:
         self.l2_node_rpc_host = "127.0.0.1"
         self.l2_node_rpc_port = 7545
 
+        self.l1_beacon_protocol = "http"
+        self.l1_beacon_host = "127.0.0.1"
+        self.l1_beacon_path = ""
+        self.l1_beacon_port = 8545
+
+        # See :py:attr:`l1_beacon_for_node_url` for more details.
+        self.l1_beacon_for_node_protocol = "ws"
+        self.l1_beacon_for_node_host = "127.0.0.1"
+        self.l1_beacon_for_node_path = ""
+        self.l1_beacon_for_node_port = 8546
+
         self.batch_inbox_address = "0xff69000000000000000000000000001201101712"
         """
         Address of the batch inbox contract on L1.
@@ -284,3 +295,49 @@ class NetworkConfig:
         self._set_url_components(url, "l2_node_rpc")
 
     # ==============================================================================================
+
+    @property
+    def l1_beacon_url(self, own_address: str = None):
+        """
+        Protocol + address + port to use to connect to the L1 beacon server
+        ("http://127.0.0.1:4000" by default).
+        Host is substituted by 127.0.0.1 if it matches `own_address`.
+
+        The L2 node will use :py:attr:`l1_beacon_for_node` instead!
+        """
+        return self._maybe_local_url(
+            self.l1_beacon_protocol,
+            self.l1_beacon_host,
+            self.l1_beacon_port,
+            self.l1_beacon_path,
+            own_address=own_address)
+
+    @l1_beacon_url.setter
+    def l1_beacon_url(self, url: str):
+        self._set_url_components(url, "l1_beacon", allow_path=True)
+
+    # ==============================================================================================
+
+    @property
+    def l1_beacon_for_node_url(self, own_address: str = None):
+        """
+        Protocol + address + port for use *by the L2 node* to connect to the L1 beacon server
+        ("ws://127.0.0.1:4000" by default).
+
+        The reason for this override is to enable the L2 node to use a more performant beacon, or a
+        WebSocket connection to get L1 data.
+
+        If the config file doesn't set this but set :py:attr:`l1_beacon_url` instead, roll-op
+        will automatically copy the value of :py:attr:`l1_beacon_url` to this property.
+        """
+        return self._maybe_local_url(
+            self.l1_beacon_for_node_protocol,
+            self.l1_beacon_for_node_host,
+            self.l1_beacon_for_node_port,
+            self.l1_beacon_for_node_path,
+            own_address=own_address)
+
+    @l1_beacon_for_node_url.setter
+    def l1_beacon_for_node_url(self, url: str):
+        self._set_url_components(url, "l1_beacon_for_node", allow_path=True)
+

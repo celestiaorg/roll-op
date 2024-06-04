@@ -49,6 +49,8 @@ def start(config: Config, sequencer: bool = True):
         f"--da.auth_token='{config.da_auth_token}'",
         f"--da.namespace='{config.da_namespace}'",
 
+        f"--l1.beacon={config.l1_beacon_for_node_url}",
+
         # Sequencer Options
 
         *([] if not sequencer else [
