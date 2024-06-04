@@ -31,6 +31,10 @@ class ExplorerConfig(ABC):
         Defaults to "roll-op".
         """
 
-        self.http_listen_port = 4123
+        self.explorer_http_listen_port = 4123
+        """
+        Port on which the block explorer will listen for HTTP requests.
+        Defaults to 4123.
+        """
 
     # ==============================================================================================
