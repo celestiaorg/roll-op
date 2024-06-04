@@ -1,0 +1,14 @@
+diff --git a/packages/contracts-bedrock/foundry.toml b/packages/contracts-bedrock/foundry.toml
+index eaed71ce8..c114ab829 100644
+--- a/packages/contracts-bedrock/foundry.toml
++++ b/packages/contracts-bedrock/foundry.toml
+@@ -40,7 +40,8 @@ fs_permissions = [
+   { access='read', path = './forge-artifacts/' },
+   { access='write', path='./semver-lock.json' },
+   { access='read-write', path='./.testdata/' },
+-  { access='read', path='./kout-deployment' }
++  { access='read', path='./kout-deployment' },
++  { access='read', path='../../../deployments/' }
+ ]
+ libs = ["node_modules", "lib"]
+ 
