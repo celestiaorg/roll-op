@@ -86,11 +86,11 @@ def launch_blockscout(config: Config):
     }, regex=True)
 
     lib.replace_in_file("blockscout/docker-compose/proxy/default.conf.template", {
-        r"^.*listen .* 80;": f"    listen       {config.http_listen_port};",
+        r"^.*listen .* 80;": f"    listen       {config.explorer_http_listen_port};",
     }, regex=True)
 
     lib.replace_in_file("blockscout/docker-compose/services/nginx.yml", {
-        r"^.*- 80:80": f"      - {config.http_listen_port}:{config.http_listen_port}",
+        r"^.*- 80:80": f"      - {config.explorer_http_listen_port}:{config.explorer_http_listen_port}",
     }, regex=True)
 
     env = {**os.environ,
