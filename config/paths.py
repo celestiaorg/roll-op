@@ -137,6 +137,14 @@ class PathsConfig(ABC):
         return os.path.join(self.op_contracts_dir, "deploy-config", f"{self.deployment_name}.json")
 
     @property
+    def op_apply_patch(self):
+        """
+        Whether to apply the `fs-permissions-deployments.patch` patch to the Optimism
+        monorepo.
+        """
+        return True
+
+    @property
     def op_deployment_artifacts_dir(self):
         """
         Returns the directory where the deployment script will place the deployment artifacts
