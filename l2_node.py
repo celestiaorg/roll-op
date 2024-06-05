@@ -40,6 +40,7 @@ def start(config: Config, sequencer: bool = True):
         f"--plasma.da-service='{config.plasma_da_service}'",
 
         f"--l1.beacon={config.l1_beacon_for_node_url}",
+        f"--l1.beacon.ignore={config.l1_beacon_ignore}",
 
         # Sequencer Options
 

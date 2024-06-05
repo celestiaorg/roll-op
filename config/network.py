@@ -296,6 +296,11 @@ class NetworkConfig:
 
     # ==============================================================================================
 
+    l1_beacon_ignore = True
+    """
+    When false, halts op-node startup if the healthcheck to the Beacon-node endpoint fails.
+    """
+
     @property
     def l1_beacon_url(self, own_address: str = None):
         """
