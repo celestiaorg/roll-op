@@ -456,13 +456,13 @@ def check_or_install_foundry():
 
 ####################################################################################################
 
-MIN_GETH_VERSION = "1.13.4"
+MIN_GETH_VERSION = "1.13.15"
 """Minimum supported geth version."""
 
-INSTALL_GETH_VERSION = "1.13.4"
+INSTALL_GETH_VERSION = "1.13.15"
 """Version of geth to install if not found."""
 
-INSTALL_GETH_COMMIT_SLUG = "3f907d6a"
+INSTALL_GETH_COMMIT_SLUG = "3fbae78"
 """The commit prefix that must added to the version to download the correct geth version."""
 
 
