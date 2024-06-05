@@ -235,10 +235,5 @@ DEVNET_CONFIG = {
     "l1UseClique": True,
     "cliqueSignerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
     "l1GenesisBlockTimestamp": "REPLACE THIS OR UNUSED",
-    "l1BlockTime": 3,
-    "l2GenesisRegolithTimeOffset": "0x0",
-    "l2GenesisCanyonTimeOffset": "0x0",
-    "l2GenesisDeltaTimeOffset": "0x0",
-    "l2GenesisEcotoneTimeOffset": "0x0",
-    "l2GenesisFjordTimeOffset": "0x0"
+    "l1BlockTime": 3
 }
