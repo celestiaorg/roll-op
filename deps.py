@@ -579,6 +579,63 @@ def install_celestia_node():
 
 ####################################################################################################
 
+MIN_DA_SERVER_VERSION = "0.1.0"
+
+INSTALL_DA_SERVER_VERSION = "0.1.0"
+
+# --------------------------------------------------------------------------------------------------
+
+def check_or_install_da_server():
+    """
+    Verify that da server is installed and has the correct version, or install it if not.
+    """
+
+    if shutil.which("da-server") is not None:
+        # This includes ./bin/jq, as basic_setup() adds ./bin to the path.
+        version_blob = lib.run("get da-server version", "da-server --version")
+        match = re.search(r"^da-server version v(\d+\.\d+\.\d+)", version_blob, flags=re.MULTILINE)
+        if match is not None:
+            version = match.group(1)
+            if version >= MIN_DA_SERVER_VERSION:
+                print(f"Using da-server {version}")
+                return
+            else:
+                lib.debug(f"Found da-server {version}")
+
+    if lib.ask_yes_no(
+            f"da server >= {MIN_DA_SERVER_VERSION} is required. "
+            f"Install da server {INSTALL_DA_SERVER_VERSION} in ./bin?\n"
+            "This will overwrite any version of da-server that might be in that directory."):
+        install_da_server()
+    else:
+        raise Exception(f"da server missing or wrong version (expected: > {MIN_DA_SERVER_VERSION}).")
+
+
+# --------------------------------------------------------------------------------------------------
+
+def install_da_server():
+    """
+    Installs da server in ./bin
+    """
+    descr = "install da server"
+    os.makedirs("bin", exist_ok=True)
+    osys = get_valid_os("da-sever")
+    arch = get_valid_arch("da-sever")
+
+    try:
+        host = "https://github.com"
+        da_server_id = f"v{INSTALL_DA_SERVER_VERSION}/op-plasma-celestia_{INSTALL_DA_SERVER_VERSION}_{osys}_{arch}.tar.gz"
+        url = f"{host}/celestiaorg/op-plasma-celestia/releases/download/{da_server_id}"
+        lib.run(descr, f"curl -L {url} | tar xz -C bin op-plasma-celestia")
+    except Exception as err:
+        raise lib.extend_exception(err, prefix="Failed to install da server: ") from None
+
+    shutil.move("bin/op-plasma-celestia", "bin/da-server")
+
+    print(f"Successfully installed da server {INSTALL_DA_SERVER_VERSION} as ./bin/da-server")
+
+####################################################################################################
+
 MIN_DOCKER_VERSION = "24"
 """
 Minimum supported Docker version. This is somewhat arbitrary, simply the latest major version,

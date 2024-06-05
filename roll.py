@@ -336,6 +336,7 @@ def main():
             deps.check_or_install_geth()
             deps.check_or_install_foundry()
             deps.check_or_install_celestia_node()
+            deps.check_or_install_da_server()
 
             if config.run_devnet_l1:
                 l1.deploy_devnet_l1(config)
@@ -361,6 +362,7 @@ def main():
 
             deps.check_or_install_foundry()
             deps.check_or_install_celestia_node()
+            deps.check_or_install_da_server()
 
             celestia_light_node.start(config)
             time.sleep(15)

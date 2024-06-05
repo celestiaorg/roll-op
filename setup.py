@@ -78,14 +78,6 @@ def setup_optimism_repo(config: Config):
     shutil.copyfile("optimism/op-node/bin/op-node", "bin/op-node")
     lib.chmodx("bin/op-node")
 
-    lib.run(
-        "[op-plasma] build",
-        "make",
-        cwd="optimism/op-plasma")
-
-    shutil.copyfile("optimism/op-plasma/bin/da-server", "bin/da-server")
-    lib.chmodx("bin/da-server")
-
     if not os.path.isfile("optimism/op-program/bin/prestate-proof.json"):
         print("Building the Cannon pre-state")
         lib.run(
