@@ -52,11 +52,10 @@ def setup_optimism_repo(config: Config):
         lib.run("[optimism] tag custom version",
                 f"git tag {git_custom_tag}",
                 cwd="optimism")
-
-    if config.op_apply_patch:
-        lib.run("[optimism] apply patch",
-                "git apply ../patches/fs-permissions-deployments.patch",
-                cwd="optimism")
+        if config.op_apply_patch:
+            lib.run("[optimism] apply patch",
+                    "git apply ../patches/fs-permissions-deployments.patch",
+                    cwd="optimism")
 
     log_file = f"{config.logs_dir}/build_optimism.log"
     print(
