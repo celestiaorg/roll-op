@@ -21,7 +21,7 @@ def start(config: Config):
         "light",
         "start",
         "--p2p.network", "mocha",
-        "--core.ip", "consensus-full-mocha-4.celestia-mocha.com",
+        "--core.ip", "rpc-mocha.pops.one",
         "--gateway"
     ]
 
