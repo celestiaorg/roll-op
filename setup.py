@@ -26,9 +26,9 @@ def setup(config: Config):
 ####################################################################################################
 
 def setup_optimism_repo(config: Config):
-    github_url = "https://github.com/celestiaorg/optimism.git"
+    github_url = "https://github.com/ethereum-optimism/optimism.git"
 
-    git_tag = "origin/plasma-celestia-openrpc"
+    git_tag = "v1.7.7"
     git_custom_tag = "roll-op/v1.3.1"
 
     if os.path.isfile("optimism"):
