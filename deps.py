@@ -462,7 +462,7 @@ MIN_GETH_VERSION = "1.13.15"
 INSTALL_GETH_VERSION = "1.13.15"
 """Version of geth to install if not found."""
 
-INSTALL_GETH_COMMIT_SLUG = "3fbae78"
+INSTALL_GETH_COMMIT_SLUG = "c5ba367e"
 """The commit prefix that must added to the version to download the correct geth version."""
 
 
