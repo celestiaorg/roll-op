@@ -360,16 +360,32 @@ def main():
             if state.args.clean_first:
                 l2.clean(config)
 
-            deps.check_or_install_foundry()
-            deps.check_or_install_celestia_node()
-            deps.check_or_install_da_server()
+            if state.args.preset == "prod":
+                if lib.ask_yes_no("this branch deploys alt-da with celestia da-server. "+
+                        "While it has received initial review from core contributors, "+
+                        "it is still undergoing testing and may have bugs or other issues. "+
+                        "Please check https://docs.optimism.io/builders/chain-operators/features/alt-da-mode for more details"):
+                    deps.check_or_install_foundry()
+                    deps.check_or_install_celestia_node()
+                    deps.check_or_install_da_server()
 
-            celestia_light_node.start(config)
-            time.sleep(15)
-            da_server.start(config)
-            l2.deploy_and_start(config)
-            start_addons(config)
-            wait(config)
+                    celestia_light_node.start(config)
+                    time.sleep(15)
+                    da_server.start(config)
+                    l2.deploy_and_start(config)
+                    start_addons(config)
+                    wait(config)
+            else:
+                deps.check_or_install_foundry()
+                deps.check_or_install_celestia_node()
+                deps.check_or_install_da_server()
+
+                celestia_light_node.start(config)
+                time.sleep(15)
+                da_server.start(config)
+                l2.deploy_and_start(config)
+                start_addons(config)
+                wait(config)
 
         elif state.args.command == "aa":
             if state.args.clean_first:
