@@ -94,7 +94,7 @@ def setup_op_geth_repo(config: Config):
     Clone the op-geth repository and build it.
     """
     github_url = "https://github.com/ethereum-optimism/op-geth.git"
-    git_tag = "v1.101304.1"
+    git_tag = "v1.101315.2"
 
     if os.path.isfile("op-geth"):
         raise Exception("Error: 'op-geth' exists as a file and not a directory.")
